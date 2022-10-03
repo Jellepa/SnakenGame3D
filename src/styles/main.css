@@ -1,0 +1,170 @@
+body {
+  /* remove margins and scroll bars */
+  margin: 0;
+  overflow: hidden;
+
+  /* style text */
+  text-align: center;
+  font-size: 12px;
+  font-family: Sans-Serif;
+
+  /* color text */
+  color: #ccc;
+}
+
+.onTop {
+  /* position the heading */
+  position: absolute;
+  width: 100%;
+  /* make sure that the heading is drawn on top */
+  z-index: 1;
+}
+
+#modal.closed {
+  display: none;
+}
+
+#modal.open {
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%);
+  margin-top: 11vh;
+  padding: 10px;
+  justify-content: center;
+  align-items: center;
+  background-color: #1564ad;
+}
+
+#gameExplanationModal.open {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  max-width: 100vw;
+  margin: auto;
+  height: 85vh;
+  margin-top: 11vh;
+  padding: 10px;
+  justify-content: center;
+  align-items: center;
+}
+#gameExplanationModal.closed {
+  display: none;
+}
+
+#scene-container {
+  /* tell our scene container to take up the full page */
+  position: absolute;
+  width: 100%;
+  height: 100%;
+
+  /*
+      Set the container's background color to the same as the scene's
+      background to prevent flashing on load
+    */
+  background-color: teal;
+}
+
+.myButton {
+  z-index: 10;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  height: 30px;
+  width: 30px;
+  box-shadow: 3px 4px 0px 0px #1564ad;
+  background: linear-gradient(to bottom, #79bbff 5%, #378de5 100%);
+  background-color: #79bbff;
+  border-radius: 5px;
+  border: 1px solid #337bc4;
+  display: block;
+  cursor: pointer;
+  color: #ffffff;
+  font-family: Arial;
+  font-size: 17px;
+  font-weight: bold;
+  text-decoration: none;
+  text-shadow: 0px 1px 0px #528ecc;
+  margin-right: 10px;
+}
+.myButton:last-child {
+  margin-right: 0px;
+}
+.myButton:hover {
+  background: linear-gradient(to bottom, #378de5 5%, #79bbff 100%);
+  background-color: #378de5;
+}
+.myButton:active {
+  top: 11px;
+}
+
+.myButton.soundButton {
+  right: 60px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.myButton > img {
+  width: 17px;
+  color: white;
+}
+
+/* controls */
+.controlGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  width: min-content;
+  margin: auto;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.control {
+  width: 30px;
+  height: 30px;
+  border: 1px solid white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.inline {
+  display: inline;
+  margin: 10px 5px 10px 5px;
+}
+
+.control.inline {
+  display: inline-flex;
+}
+
+.W {
+  grid-row: 1;
+  grid-column: 2;
+}
+
+.A {
+  grid-row: 2;
+  grid-column: 1;
+}
+
+.S {
+  grid-row: 2;
+
+  grid-column: 2;
+}
+
+.D {
+  grid-row: 2;
+
+  grid-column: 3;
+}
+
+.space {
+  display: inline-flex;
+  border: 1px solid white;
+  padding: 5px 20px 5px 20px;
+  margin: 10px 5px 10px 5px;
+}

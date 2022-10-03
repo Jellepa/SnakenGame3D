@@ -1,0 +1,23 @@
+todo:
+
+- fix death by full turn bug
+V - fix spawn in corner bug
+- still fix spawn in corner bug for first element
+- implement better steptime
+- implement better speed 9  instead of 90
+- implement a stepTime to score multiplyer
+V - implement turn off soundbutton
+V - fix, the eatFruit sound does not always play,
+      becuz the sound is still playing and hasn't stopped yet
+V - externalise the gameloop as a async function (?)
+- input buffer
+- clean-up html content in template
+- make minimap beautiful
+- externalise minimap setup from gameloop
+
+- research ways to persistently save highscore's on the server, 
+      without database or expensive setup
+- implement highscore
+
+v2
+- special fruit
