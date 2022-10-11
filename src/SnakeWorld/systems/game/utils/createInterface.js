@@ -2,7 +2,7 @@ import { setupMiniMap } from "./setupMiniMap";
 
 const mute = require("../../../../assets/images/mute.svg");
 
-const unMute = require("../../../../assets/images/unMute.svg");
+const unmute = require("../../../../assets/images/unmute.svg");
 
 const digitalDreamFont = require("../../../../assets/fonts/DIGITALDREAMFAT.ttf");
 
@@ -150,7 +150,7 @@ const createInterface = () => {
 
   const unmuteImage = document.createElement("img");
 
-  unmuteImage.src = unMute;
+  unmuteImage.src = unmute;
 
   muteButton.append(muteImage);
   muteImage.style.width = "30px";

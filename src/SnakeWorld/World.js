@@ -24,9 +24,6 @@ import { Ground } from "./components/Ground/Ground.js";
 import { createInterface } from "./systems/game/utils/createInterface.js";
 import { createModal } from "./systems/game/utils/createModal";
 
-const mute = require("../assets/images/mute.svg");
-const unMute = require("../assets/images/unMute.svg");
-
 // These variables are module-scoped: we cannot access them
 // from outside the module
 let camera;

@@ -12,16 +12,16 @@ import { Fruit } from "../../components/Fruit/Fruit.js";
 import { SnakeHead } from "../../components/SnakeHead/SnakeHead.js";
 import { SnakeBody } from "../../components/SnakeBody/SnakeBody.js";
 
-const gameSound = require("./../../../assets/sounds/gameSound.mp3");
+import mute from "../../../assets/images/mute.svg";
+import unmute from "../../../assets/images/unmute.svg";
 
-const mute = require("../../../assets/images/mute.svg");
-const unMute = require("../../../assets/images/unMute.svg");
+const gameSound = require("./../../../assets/sounds/gameSound.mp3");
 
 const muteImage = document.createElement("img");
 muteImage.src = mute;
 
 const unmuteImage = document.createElement("img");
-unmuteImage.src = unMute;
+unmuteImage.src = unmute;
 
 // import gameControls !!!!
 
