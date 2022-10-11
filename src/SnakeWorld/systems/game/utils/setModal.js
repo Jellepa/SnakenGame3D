@@ -62,7 +62,11 @@ function setModal(gameState, modal, option, cssClass) {
       modal.innerHTML = "<h1>YEEEH SNAKENGAME</h1>";
   }
 
-  modal.classList = cssClass;
+  if (cssClass === "open") {
+    modal.style.display = "block";
+  } else {
+    modal.style.display = "none";
+  }
 }
 
 export { setModal };

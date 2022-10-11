@@ -21,6 +21,8 @@ import {
   createHemisphereLight,
 } from "./components/lights.js";
 import { Ground } from "./components/Ground/Ground.js";
+import { createInterface } from "./systems/game/utils/createInterface.js";
+import { createModal } from "./systems/game/utils/createModal";
 
 const mute = require("../assets/images/mute.svg");
 const unMute = require("../assets/images/unMute.svg");
@@ -47,10 +49,16 @@ class World {
 
     // bunch of html elements
 
-    const gameExplanationButton = document.createElement("button");
-    gameExplanationButton.classList = "myButton explanationBtn";
-    gameExplanationButton.append("?");
-    onTop.append(gameExplanationButton);
+    const gameInterface = createInterface();
+    onTop.append(gameInterface);
+
+    const modal = createModal();
+    onTop.append(modal);
+
+    // const gameExplanationButton = document.createElement("button");
+    // gameExplanationButton.classList = "myButton explanationBtn";
+    // gameExplanationButton.append("?");
+    // onTop.append(gameExplanationButton);
 
     /* const gameExplanationModal = document.createElement("div");
     gameExplanationModal.classList = "open";
@@ -64,50 +72,45 @@ class World {
       }
     } */
 
-    const muteButton = document.createElement("button");
-    muteButton.id = "muteButton";
-    muteButton.classList = "myButton soundButton";
+    //const muteButton = document.createElement("button");
+    //muteButton.id = "muteButton";
+    //muteButton.classList = "myButton soundButton";
 
-    const muteImage = document.createElement("img");
-    muteImage.src = mute;
-    const unmuteImage = document.createElement("img");
-    unmuteImage.src = unMute;
+    // const muteImage = document.createElement("img");
+    // muteImage.src = mute;
+    // const unmuteImage = document.createElement("img");
+    // unmuteImage.src = unMute;
 
-    muteButton.append(muteImage);
-    onTop.append(muteButton);
+    // muteButton.append(muteImage);
+    // onTop.append(muteButton);
 
     // Add later!!
 
-    const miniMap = document.createElement("canvas");
-    miniMap.className = "miniMap";
-    miniMap.width = 200;
-    miniMap.height = 200;
-    miniMap.style.background = "#222";
-    miniMap.style.position = "absolute";
-    miniMap.style.top = "10px";
-    miniMap.style.left = "10px";
-    onTop.append(miniMap);
+    // const miniMap = document.createElement("canvas");
+    // miniMap.className = "miniMap";
+    // miniMap.width = 200;
+    // miniMap.height = 200;
+    // miniMap.style.position = "absolute";
+    // miniMap.style.top = "10px";
+    // miniMap.style.left = "10px";
+    // onTop.append(miniMap);
 
-    const miniMapContext = miniMap.getContext("2d");
-    miniMapContext.lineWidth = 10;
-    miniMapContext.strokeRect(0, 0, 200, 200);
+    // const speedIndicator = document.createElement("div");
+    // speedIndicator.className = "speedIndicator";
+    //onTop.append(speedIndicator);
 
-    const speedIndicator = document.createElement("div");
-    speedIndicator.className = "speedIndicator";
-    onTop.append(speedIndicator);
+    // const scoreBoard = document.createElement("div");
+    // scoreBoard.className = "scoreBoard";
+    // onTop.append(scoreBoard);
 
-    const scoreBoard = document.createElement("div");
-    scoreBoard.className = "scoreBoard";
-    onTop.append(scoreBoard);
+    // const highScoreBoard = document.createElement("div");
+    // highScoreBoard.id = "highScoreBoard";
+    // onTop.append(highScoreBoard);
 
-    const highScoreBoard = document.createElement("div");
-    highScoreBoard.id = "highScoreBoard";
-    onTop.append(highScoreBoard);
-
-    const modal = document.createElement("div");
-    modal.id = "modal";
-    modal.classList = "closed ";
-    onTop.append(modal);
+    // const modal = document.createElement("div");
+    // modal.id = "modal";
+    // modal.classList = "closed ";
+    // onTop.append(modal);
 
     // lights
 
@@ -265,13 +268,14 @@ class World {
       scene,
       gameControls,
       loop,
-      scoreBoard,
+      gameInterface
+      /* scoreBoard,
       highScoreBoard,
       speedIndicator,
       modal,
       muteButton,
       gameExplanationButton,
-      miniMap
+      miniMap */
     );
 
     // loop.stepTime = game.gameSettings.stepTime;

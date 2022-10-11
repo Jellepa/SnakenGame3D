@@ -51,6 +51,10 @@ module.exports = {
         test: /\.mp3$/,
         type: "asset/resource",
       },
+      {
+        test: /\.ttf$/,
+        type: "asset/resource",
+      },
     ],
   },
   plugins: [

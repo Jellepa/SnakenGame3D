@@ -5,6 +5,7 @@ import { gameLoop } from "./gameLoop";
 import { updateDirection } from "./utils/updateDirection";
 import { removeMeshes } from "./utils/removeMeshes";
 import { setModal } from "./utils/setModal";
+import { setupMiniMap } from "./utils/setupMiniMap";
 import { muteSounds, playMusic, unmuteSounds } from "./utils/playSounds";
 
 import { Fruit } from "../../components/Fruit/Fruit.js";
@@ -29,13 +30,14 @@ class Game {
     scene,
     controls,
     loop,
-    scoreBoard,
+    gameInterface
+    /* scoreBoard,
     highScoreBoard,
     speedIndicator,
     modal,
     soundBtn,
     gameExplanationButton,
-    miniMap
+    miniMap */
   ) {
     this.gameState = createGameState();
 
@@ -43,21 +45,23 @@ class Game {
 
     // html elements
 
-    this.scoreBoard = scoreBoard;
+    // console.log(gameInterface);
 
-    this.highScoreBoard = highScoreBoard;
+    this.scoreBoard = document.getElementById("scoreBoard");
 
-    this.speedIndicator = speedIndicator;
+    this.highScoreBoard = document.getElementById("highScoreBoard");
 
-    this.soundBtn = soundBtn;
+    this.speedIndicator = document.getElementById("speedIndicator");
 
-    this.gameExplanationButton = gameExplanationButton;
+    this.soundBtn = document.getElementById("muteButton");
 
-    this.modal = modal;
+    this.gameExplanationButton = document.getElementById(
+      "gameExplanationButton"
+    );
 
-    this.miniMap = miniMap;
+    this.miniMap = document.getElementById("miniMap");
 
-    // this.highScore = 0;
+    this.modal = document.getElementById("modal");
 
     this.snakeHeadMesh = new SnakeHead();
 
@@ -185,8 +189,10 @@ class Game {
 
     this.scoreBoard.innerHTML = "Score: " + this.gameState.score;
     this.speedIndicator.innerHTML = "Speed: " + this.gameSettings.speed;
-    this.modal.classList = "closed";
+    // this.modal.classList = "closed";
+    setModal(this.gameState, this.modal, "pause", "closed");
     playMusic(gameSound, this.gameSettings.audio);
+    setupMiniMap(this.miniMap);
   }
 
   pause() {
