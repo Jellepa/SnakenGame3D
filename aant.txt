@@ -19,5 +19,7 @@ V - externalise the gameloop as a async function (?)
       without database or expensive setup
 - implement highscore
 
+- link to pizzaDude, creator of digital-dream font
+
 v2
 - special fruit
