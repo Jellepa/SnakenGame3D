@@ -19,13 +19,13 @@ const modalStyles = {
   borderRadius: "10px",
   padding: "30px",
   overflow: "auto",
+  display: "none",
 };
 
 const createModal = () => {
   const modal = document.createElement("div");
   modal.id = "modal";
   css(modal, modalStyles);
-  modal.innerHTML = "je moeder";
 
   return modal;
 };
