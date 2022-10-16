@@ -21,7 +21,7 @@ import {
   createHemisphereLight,
 } from "./components/lights.js";
 import { Ground } from "./components/Ground/Ground.js";
-import { createInterface } from "./systems/game/utils/createInterface.js";
+import { createInterface } from "./systems/game/utils/interface/createInterface.js";
 import { createModal } from "./systems/game/utils/createModal";
 
 // These variables are module-scoped: we cannot access them
