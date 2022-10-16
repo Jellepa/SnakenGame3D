@@ -1,16 +1,15 @@
 {
-  "name": "tut-discoverthreejs",
+  "name": "SnakenGame3D",
   "version": "1.0.0",
-  "description": "",
+  "description": "A classic game reinvented",
   "private": true,
   "scripts": {
     "start": "http-server dist",
     "build": "webpack --config webpack.prod.js",
-    "dev": "webpack serve --config webpack.dev.js",
+    "start-dev": "webpack serve --config webpack.dev.js",
     "build-dev": "webpack --config webpack.dev.js"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "Jelle Paulus",
   "dependencies": {
     "http-server": "^14.1.1",
     "three": "^0.141.0"

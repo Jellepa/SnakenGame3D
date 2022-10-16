@@ -79,6 +79,127 @@ class Game {
 
     // createEventListeners()
 
+    const mobileControls = document.createElement("div");
+    mobileControls.classList = "mobileControls";
+    mobileControls.style.position = "absolute";
+    mobileControls.style.bottom = "0";
+    mobileControls.style.zIndex = "1000";
+    mobileControls.style.width = "calc(100% - 20px)";
+    mobileControls.style.padding = "10px";
+    mobileControls.style.display = "grid";
+    mobileControls.style.gap = "10px";
+    mobileControls.style.gridTemplateColumns = "repeat(3, 1fr)";
+    mobileControls.style.gridAutoRows = "minmax(100px, auto)";
+
+    const left = document.createElement("div");
+    left.classList = "left";
+    left.style.borderRadius = "10px";
+    left.style.background = "rgba( 20, 20, 20, 0.6 )";
+    left.style.boxShadow = "0 8px 32px 0 rgba( 38, 38, 38, 0.17 )";
+    left.style.backdropFilter = "blur( 4px )";
+    left.style.border = "1px solid rgba( 10, 10, 10, 0.18 )";
+    left.style.gridColumn = "1/2";
+    left.style.gridRow = "1/3";
+
+    const up = document.createElement("div");
+    up.classList = "up";
+    up.style.borderRadius = "10px";
+    up.style.background = "rgba( 20, 20, 20, 0.6 )";
+    up.style.boxShadow = "0 8px 32px 0 rgba( 38, 38, 38, 0.17 )";
+    up.style.backdropFilter = "blur( 4px )";
+    up.style.border = "1px solid rgba( 10, 10, 10, 0.18 )";
+    up.style.gridColumn = "2/3";
+    up.style.gridRow = "1/2";
+
+    const down = document.createElement("div");
+    down.classList = "down";
+    down.style.borderRadius = "10px";
+    down.style.background = "rgba( 20, 20, 20, 0.6 )";
+    down.style.boxShadow = "0 8px 32px 0 rgba( 38, 38, 38, 0.17 )";
+    down.style.backdropFilter = "blur( 4px )";
+    down.style.border = "1px solid rgba( 10, 10, 10, 0.18 )";
+    down.style.gridColumn = "2/3";
+    down.style.gridRow = "2/3";
+
+    const right = document.createElement("div");
+    right.classList = "right";
+    right.style.borderRadius = "10px";
+    right.style.background = "rgba( 20, 20, 20, 0.6 )";
+    right.style.boxShadow = "0 8px 32px 0 rgba( 38, 38, 38, 0.17 )";
+    right.style.backdropFilter = "blur( 4px )";
+    right.style.border = "1px solid rgba( 10, 10, 10, 0.18 )";
+    right.style.gridColumn = "3/4";
+    right.style.gridRow = "1/3";
+
+    const bar = document.createElement("div");
+    bar.classList = "bar";
+    bar.style.borderRadius = "10px";
+    bar.style.background = "rgba( 20, 20, 20, 0.6 )";
+    bar.style.boxShadow = "0 8px 32px 0 rgba( 38, 38, 38, 0.17 )";
+    bar.style.backdropFilter = "blur( 4px )";
+    bar.style.border = "1px solid rgba( 10, 10, 10, 0.18 )";
+    bar.style.gridColumn = "1/4";
+    bar.style.gridRow = "3/4";
+
+    mobileControls.append(left);
+
+    mobileControls.append(right);
+
+    mobileControls.append(up);
+
+    mobileControls.append(down);
+
+    mobileControls.append(bar);
+
+    const onTop = document.getElementById("onTop");
+
+    onTop.append(mobileControls);
+
+    document.addEventListener("touchstart", (e) => {
+      console.log(e.target.classList.value);
+      if (e.target.classList.value === "bar") {
+        if (this.gameState.running === false) {
+          this.start();
+        } else {
+          this.pause();
+        }
+      }
+      if (e.target.classList.value === "up") {
+        if (this.gameSettings.stepTime > 0.2) {
+          this.gameSettings.stepTime -= 0.1;
+          this.gameSettings.speed += 10;
+          this.speedIndicator.innerHTML = "Speed: " + this.gameSettings.speed;
+        }
+      }
+      if (e.target.classList.value === "down") {
+        if (this.gameSettings.stepTime < 0.5) {
+          this.gameSettings.stepTime += 0.1;
+          this.gameSettings.speed -= 10;
+          this.speedIndicator.innerHTML = "Speed: " + this.gameSettings.speed;
+        }
+      }
+      if (e.target.classList.value === "left" || "right") {
+        updateDirection(e, this.gameState);
+      }
+    });
+
+    /*  document.addEventListener("touchstart", () => {
+      console.log("start");
+      if (this.gameState.running === false) {
+        this.start();
+      } else {
+        this.pause();
+      }
+    });
+
+    document.addEventListener("touchmove", () => {
+      console.log("move");
+    });
+
+    document.addEventListener("touchend", () => {
+      console.log("end");
+    }); */
+
     this.soundBtn.addEventListener("click", () => {
       this.gameState.audio = !this.gameState.audio;
       if (this.gameState.audio) {

@@ -11,9 +11,10 @@ V - fix, the eatFruit sound does not always play,
       becuz the sound is still playing and hasn't stopped yet
 V - externalise the gameloop as a async function (?)
 - input buffer
-- clean-up html content in template
-- make minimap beautiful
-- externalise minimap setup from gameloop
+V - clean-up html content in template
+V - make minimap beautiful
+V - externalise minimap setup from gameloop
+- make html inputs mobile ok, onTop -> overflow -> hidden and proper css
 
 - research ways to persistently save highscore's on the server, 
       without database or expensive setup

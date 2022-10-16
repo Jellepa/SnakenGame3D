@@ -46,68 +46,13 @@ class World {
 
     // bunch of html elements
 
+    onTop.style.overflow = "hidden";
+
     const gameInterface = createInterface();
     onTop.append(gameInterface);
 
     const modal = createModal();
     onTop.append(modal);
-
-    // const gameExplanationButton = document.createElement("button");
-    // gameExplanationButton.classList = "myButton explanationBtn";
-    // gameExplanationButton.append("?");
-    // onTop.append(gameExplanationButton);
-
-    /* const gameExplanationModal = document.createElement("div");
-    gameExplanationModal.classList = "open";
-    onTop.append(gameExplanationModal); */
-
-    /*     function toggleExplanationModal() {
-      if (gameExplanationModal.classList.value === "open") {
-        gameExplanationModal.classList = "closed";
-      } else {
-        gameExplanationModal.classList = "open";
-      }
-    } */
-
-    //const muteButton = document.createElement("button");
-    //muteButton.id = "muteButton";
-    //muteButton.classList = "myButton soundButton";
-
-    // const muteImage = document.createElement("img");
-    // muteImage.src = mute;
-    // const unmuteImage = document.createElement("img");
-    // unmuteImage.src = unMute;
-
-    // muteButton.append(muteImage);
-    // onTop.append(muteButton);
-
-    // Add later!!
-
-    // const miniMap = document.createElement("canvas");
-    // miniMap.className = "miniMap";
-    // miniMap.width = 200;
-    // miniMap.height = 200;
-    // miniMap.style.position = "absolute";
-    // miniMap.style.top = "10px";
-    // miniMap.style.left = "10px";
-    // onTop.append(miniMap);
-
-    // const speedIndicator = document.createElement("div");
-    // speedIndicator.className = "speedIndicator";
-    //onTop.append(speedIndicator);
-
-    // const scoreBoard = document.createElement("div");
-    // scoreBoard.className = "scoreBoard";
-    // onTop.append(scoreBoard);
-
-    // const highScoreBoard = document.createElement("div");
-    // highScoreBoard.id = "highScoreBoard";
-    // onTop.append(highScoreBoard);
-
-    // const modal = document.createElement("div");
-    // modal.id = "modal";
-    // modal.classList = "closed ";
-    // onTop.append(modal);
 
     // lights
 
@@ -274,10 +219,6 @@ class World {
       gameExplanationButton,
       miniMap */
     );
-
-    // loop.stepTime = game.gameSettings.stepTime;
-
-    // loop.updatables.push(game, gameControls);
 
     loop.updatables.push(game, train);
 

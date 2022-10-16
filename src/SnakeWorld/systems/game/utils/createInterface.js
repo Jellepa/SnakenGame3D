@@ -23,10 +23,9 @@ const gameInterfaceStyles = {
   position: "absolute",
   left: "10px",
   top: "10px",
-  width: "400px",
+  width: "calc(100% - 20px)",
   height: "220px",
   borderRadius: "10px",
-
   background: "rgba( 20, 20, 20, 0.6 )",
   boxShadow: "0 8px 32px 0 rgba( 38, 38, 38, 0.17 )",
   backdropFilter: "blur( 4px )",
@@ -34,11 +33,11 @@ const gameInterfaceStyles = {
 };
 
 const miniMapStyles = {
-  width: "200px",
-  height: "200px",
+  width: "50%",
+  height: "auto",
   position: "absolute",
   top: "10px",
-  left: "10px",
+  left: "5px",
   borderRadius: "10px",
   boxShadow: "0 8px 32px 0 rgba( 38, 38, 38, 0.17 )",
 };
@@ -47,17 +46,17 @@ const textStyles = {
   fontFamily: "Digital Dream",
   color: "#fff",
   position: "relative",
-  left: "220px",
+  left: "calc(50% + 10px)",
   textAlign: "left",
   textTransform: "uppercase",
 };
 
 const titleStyles = {
-  fontSize: "22px",
+  fontSize: "20px",
 };
 
 const indicatorStyles = {
-  fontSize: "20px",
+  fontSize: "18px",
   marginBottom: "10px",
 };
 
