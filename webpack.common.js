@@ -38,6 +38,10 @@ module.exports = {
         test: /\.ttf$/,
         type: "asset/resource",
       },
+      {
+        test: /\.ico$/i,
+        type: "asset/resource",
+      },
     ],
   },
   plugins: [
@@ -45,6 +49,7 @@ module.exports = {
       title: "SnakenGame3D",
       filename: "index.html",
       template: "src/template.html",
+      favicon: "src/assets/images/favicon.ico",
     }),
   ],
 };
