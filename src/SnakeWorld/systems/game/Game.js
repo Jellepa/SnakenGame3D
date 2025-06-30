@@ -3,12 +3,14 @@ import { createGameSettings } from "./gameSettings";
 import { gameLoop } from "./gameLoop";
 
 import { updateDirection } from "./utils/updateDirection";
+import { updateDirectionSafe } from "./utils/updateDirectionSafe";
 import { removeMeshes } from "./utils/removeMeshes";
 import { setModal } from "./utils/setModal";
 import { setupMiniMap } from "./utils/setupMiniMap";
 import { muteSounds, playMusic, unmuteSounds } from "./utils/playSounds";
 
 import { Fruit } from "../../components/Fruit/Fruit.js";
+import { SpecialFruit } from "../../components/SpecialFruit/SpecialFruit.js";
 import { SnakeHead } from "../../components/SnakeHead/SnakeHead.js";
 import { SnakeBody } from "../../components/SnakeBody/SnakeBody.js";
 
@@ -58,6 +60,7 @@ class Game {
     this.snakeTailMeshArray = [];
 
     this.fruitMesh = new Fruit();
+    this.specialFruitMesh = null; // Created dynamically when needed
 
     this.localElapsedTime = 0;
 
@@ -74,6 +77,7 @@ class Game {
 
     onTop.append(mobileControls);
 
+    // event listener for mobile controls
     document.addEventListener("touchstart", (e) => {
       console.log(e.target.classList.value);
       if (e.target.classList.value === "bar") {
@@ -97,8 +101,16 @@ class Game {
           this.speedIndicator.innerHTML = "Speed: " + this.gameSettings.speed;
         }
       }
-      if (e.target.classList.value === "left" || "right") {
-        updateDirection(e, this.gameState);
+      if (
+        e.target.classList.value === "left" ||
+        e.target.classList.value === "right"
+      ) {
+        updateDirectionSafe(
+          e,
+          this.gameState,
+          this.gameSettings,
+          performance.now()
+        );
       }
     });
 
@@ -125,11 +137,7 @@ class Game {
         setModal(this.gameState, this.modal, "explanation", "open");
       }
     });
-
-    document.addEventListener("keydown", (e) => {
-      updateDirection(e, this.gameState);
-    });
-
+    // Event listener for keyboard controls
     document.addEventListener("keydown", (e) => {
       if (e.code === "Space") {
         if (this.gameState.running === false) {
@@ -152,6 +160,12 @@ class Game {
           this.speedIndicator.innerHTML = "Speed: " + this.gameSettings.speed;
         }
       }
+      updateDirectionSafe(
+        e,
+        this.gameState,
+        this.gameSettings,
+        performance.now()
+      );
     });
   }
 
@@ -170,7 +184,36 @@ class Game {
         this.loop.stepTime = this.gameSettings.stepTime;
 
         // Async GameLoop
-        gameLoop(
+        // Handle special fruit cleanup
+        if (!this.gameState.specialFruit.active && this.specialFruitMesh) {
+          this.scene.remove(this.specialFruitMesh);
+          const specialFruitIndex = this.loop.updatables.indexOf(
+            this.specialFruitMesh
+          );
+          if (specialFruitIndex !== -1) {
+            this.loop.updatables.splice(specialFruitIndex, 1);
+          }
+          this.specialFruitMesh = null;
+        }
+
+        // Handle special fruit spawning
+        if (this.gameState.specialFruit.active && !this.specialFruitMesh) {
+          console.log("Creating special fruit mesh..."); // Debug log
+          this.specialFruitMesh = new SpecialFruit();
+          this.scene.add(this.specialFruitMesh);
+          this.loop.updatables.push(this.specialFruitMesh);
+          this.specialFruitMesh.position.set(
+            1.5 * this.gameState.specialFruit.position.x,
+            0.7,
+            1.5 * this.gameState.specialFruit.position.z
+          );
+          console.log(
+            "Special fruit added to scene at position:",
+            this.specialFruitMesh.position
+          ); // Debug log
+        }
+
+        const gameLoopResult = gameLoop(
           this.gameState,
           this.gameSettings,
           this.scoreBoard,
@@ -184,14 +227,21 @@ class Game {
           this.snakeTailMesh,
           this.snakeTailMeshArray,
           this.scene,
-          this.miniMap
+          this.miniMap,
+          this.specialFruitMesh
         );
+
+        // Handle special fruit removal from game loop
+        if (gameLoopResult && gameLoopResult.specialFruitRemoved) {
+          this.specialFruitMesh = null;
+        }
       }
     }
   }
 
   start() {
     if (this.gameState.gameOver) {
+      // Use regular removal without animation
       removeMeshes(
         this.scene,
         this.loop,
@@ -199,15 +249,49 @@ class Game {
         this.snakeHeadMesh,
         this.snakeTailMeshArray
       );
-      this.gameState = createGameState();
 
+      // Reset game state immediately
+      this.gameState = createGameState();
       this.snakeTailMeshArray = [];
+      this.specialFruitMesh = null; // Reset special fruit mesh
+
+      // Reset all original meshes to their default state after cleanup
+      this.resetMeshesToDefault();
     }
+
+    // Start the game
     this.gameState.running = true;
     this.loop.start();
-    this.loop.updatables.push(this.snakeHeadMesh);
-    this.loop.updatables.push(this.fruitMesh);
-    this.loop.updatables.push(this.controls);
+    this.addUpdatablesToLoop();
+  }
+
+  addUpdatablesToLoop() {
+    // Add animated objects to the loop (check to avoid duplicates)
+    if (!this.loop.updatables.includes(this.snakeHeadMesh)) {
+      this.loop.updatables.push(this.snakeHeadMesh);
+    }
+    if (!this.loop.updatables.includes(this.fruitMesh)) {
+      this.loop.updatables.push(this.fruitMesh);
+    }
+    if (!this.loop.updatables.includes(this.controls)) {
+      this.loop.updatables.push(this.controls);
+    }
+
+    // Add any existing tail segments back to updatables
+    this.snakeTailMeshArray.forEach((tailMesh) => {
+      if (!this.loop.updatables.includes(tailMesh)) {
+        this.loop.updatables.push(tailMesh);
+      }
+    });
+
+    // Re-add special fruit to updatables if it exists
+    if (
+      this.specialFruitMesh &&
+      !this.loop.updatables.includes(this.specialFruitMesh)
+    ) {
+      this.loop.updatables.push(this.specialFruitMesh);
+    }
+
     this.scene.add(this.fruitMesh, this.snakeHeadMesh);
 
     this.scoreBoard.innerHTML = "Score: " + this.gameState.score;
@@ -220,8 +304,123 @@ class Game {
 
   pause() {
     this.gameState.running = false;
-    this.loop.updatables.splice(this.loop.updatables.indexOf(this.controls), 1);
+
+    // Remove animated objects from the loop to stop their animations
+    const controlsIndex = this.loop.updatables.indexOf(this.controls);
+    if (controlsIndex !== -1) {
+      this.loop.updatables.splice(controlsIndex, 1);
+    }
+
+    const snakeHeadIndex = this.loop.updatables.indexOf(this.snakeHeadMesh);
+    if (snakeHeadIndex !== -1) {
+      this.loop.updatables.splice(snakeHeadIndex, 1);
+    }
+
+    const fruitIndex = this.loop.updatables.indexOf(this.fruitMesh);
+    if (fruitIndex !== -1) {
+      this.loop.updatables.splice(fruitIndex, 1);
+    }
+
+    // Remove special fruit from updatables if it exists
+    if (this.specialFruitMesh) {
+      const specialFruitIndex = this.loop.updatables.indexOf(
+        this.specialFruitMesh
+      );
+      if (specialFruitIndex !== -1) {
+        this.loop.updatables.splice(specialFruitIndex, 1);
+      }
+    }
+
+    // Remove all snake tail segments from updatables
+    this.snakeTailMeshArray.forEach((tailMesh) => {
+      const tailIndex = this.loop.updatables.indexOf(tailMesh);
+      if (tailIndex !== -1) {
+        this.loop.updatables.splice(tailIndex, 1);
+      }
+    });
+
     setModal(this.gameState, this.modal, "pause", "open");
+  }
+
+  // Animation helper methods
+  // Reset all meshes to their default state
+  resetMeshesToDefault() {
+    // Reset fruit mesh
+    if (this.fruitMesh) {
+      this.fruitMesh.scale.set(1, 1, 1);
+      this.fruitMesh.rotation.set(0, 0, 0);
+      this.fruitMesh.visible = true; // Ensure visibility is restored
+      this.resetMeshMaterials(this.fruitMesh);
+    }
+
+    // Reset snake head mesh
+    if (this.snakeHeadMesh) {
+      this.snakeHeadMesh.scale.set(1, 1, 1);
+      this.snakeHeadMesh.rotation.set(0, 0, 0);
+      this.snakeHeadMesh.visible = true; // Ensure visibility is restored
+      this.resetMeshMaterials(this.snakeHeadMesh);
+    }
+
+    // Reset special fruit mesh
+    if (this.specialFruitMesh) {
+      this.specialFruitMesh.scale.set(1, 1, 1);
+      this.specialFruitMesh.rotation.set(0, 0, 0);
+      this.specialFruitMesh.visible = true; // Ensure visibility is restored
+      this.resetMeshMaterials(this.specialFruitMesh);
+    }
+
+    // Reset all snake tail meshes
+    this.snakeTailMeshArray.forEach((tailMesh) => {
+      if (tailMesh) {
+        tailMesh.scale.set(1, 1, 1);
+        tailMesh.rotation.set(0, 0, 0);
+        tailMesh.visible = true; // Ensure visibility is restored
+        this.resetMeshMaterials(tailMesh);
+      }
+    });
+  }
+
+  // Helper method to reset material properties
+  resetMeshMaterials(mesh) {
+    if (mesh) {
+      mesh.traverse((child) => {
+        if (child.material) {
+          if (Array.isArray(child.material)) {
+            child.material.forEach((material) => {
+              material.transparent = false;
+              material.opacity = 1.0;
+            });
+          } else {
+            child.material.transparent = false;
+            child.material.opacity = 1.0;
+          }
+        }
+      });
+    }
+  }
+
+  // Batch animate snake tail removal
+  animateRemoveSnakeTail(onComplete) {
+    if (this.snakeTailMeshArray.length === 0) {
+      if (onComplete) onComplete();
+      return;
+    }
+
+    let completedAnimations = 0;
+    const totalAnimations = this.snakeTailMeshArray.length;
+
+    this.snakeTailMeshArray.forEach((tailMesh, index) => {
+      // Stagger the animations slightly for a wave effect
+      setTimeout(() => {
+        this.animateRemoveSnakeBody(tailMesh, () => {
+          completedAnimations++;
+          if (completedAnimations === totalAnimations) {
+            this.snakeTailMeshArray = [];
+            if (onComplete) onComplete();
+          }
+        });
+      }, index * 100); // 100ms delay between each tail segment
+    });
   }
 }
 

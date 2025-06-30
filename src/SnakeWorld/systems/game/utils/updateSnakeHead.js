@@ -7,6 +7,15 @@ function updateSnakeHead(gameState) {
 
   gameState.snakeHead.oldRotation = oldRotation;
 
+  // Apply pending direction change if there is one
+  if (gameState.pendingDirection) {
+    gameState.currentSnakeDirection = gameState.pendingDirection;
+    gameState.pendingDirection = null; // Clear the buffer
+    console.log(
+      `Applied direction change to ${gameState.currentSnakeDirection}`
+    );
+  }
+
   if (gameState.currentSnakeDirection == "UP") {
     gameState.snakeHead.newPosition.z -= 1;
     gameState.snakeHead.newRotation.y = Math.PI / 2;

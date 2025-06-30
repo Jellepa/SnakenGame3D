@@ -1,6 +1,7 @@
 import { Group } from "three";
 
 import { createMeshes } from "./meshes.js";
+import { lerpAngle } from "../../systems/game/utils/lerpAngle.js";
 
 class SnakeBody extends Group {
   constructor() {
@@ -28,9 +29,11 @@ class SnakeBody extends Group {
     }
 
     if (this.newRotation) {
-      let RotationY =
-        this.oldRotation.y +
-        ((this.newRotation.y - this.oldRotation.y) / stepTime) * stepPosition;
+      let RotationY = lerpAngle(
+        this.oldRotation.y,
+        this.newRotation.y,
+        stepPosition / stepTime
+      );
 
       this.rotation.set(0, RotationY, 0);
     }

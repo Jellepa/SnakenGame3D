@@ -23,3 +23,14 @@ yarn-error.log*
 
 # workingContent
 /xx_workingContent
+
+# notes
+/notes
+/notes/*
+/.notes
+/.notes/*
+
+# AI files
+/.ai
+/.ai/*
+

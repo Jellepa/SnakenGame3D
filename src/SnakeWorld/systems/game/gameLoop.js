@@ -1,4 +1,5 @@
 import { handleScore } from "./utils/handleScore";
+import { updateSpecialFruit } from "./utils/updateSpecialFruit";
 import { checkGameOver } from "./utils/checkGameOver";
 import { handleGameOver } from "./utils/handleGameOver";
 import { updateSnakeHead } from "./utils/updateSnakeHead";
@@ -22,7 +23,8 @@ const gameLoop = async (
   snakeTailMesh,
   snakeTailMeshArray,
   scene,
-  miniMap
+  miniMap,
+  specialFruitMesh = null
 ) => {
   handleScore(gameState, gameSettings, scoreBoard);
 
@@ -46,6 +48,33 @@ const gameLoop = async (
 
   fruitMesh.position.set(1.5 * gameState.fruit.x, 0.7, 1.5 * gameState.fruit.z);
 
+  // Handle special fruit timing and positioning
+  let specialFruitRemoved = false;
+  if (specialFruitMesh) {
+    if (updateSpecialFruit(gameState, specialFruitMesh)) {
+      // Special fruit expired, remove it from scene and loop
+      scene.remove(specialFruitMesh);
+      const specialFruitIndex = loop.updatables.indexOf(specialFruitMesh);
+      if (specialFruitIndex !== -1) {
+        loop.updatables.splice(specialFruitIndex, 1);
+      }
+      specialFruitRemoved = true;
+    } else if (
+      gameState.specialFruit.active &&
+      gameState.specialFruit.position
+    ) {
+      // Update special fruit position
+      specialFruitMesh.position.set(
+        1.5 * gameState.specialFruit.position.x,
+        0.7,
+        1.5 * gameState.specialFruit.position.z
+      );
+    }
+  }
+
+  // Return indication if special fruit was removed
+  const result = { specialFruitRemoved };
+
   // updating the head
 
   updateSnakeHead(gameState);
@@ -67,6 +96,8 @@ const gameLoop = async (
   updateMiniMap(gameState, miniMap);
 
   updateControls(controls, gameState, snakeHeadMesh);
+
+  return result;
 };
 
 export { gameLoop };
