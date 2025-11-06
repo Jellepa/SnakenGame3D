@@ -4,7 +4,12 @@ import { playSounds } from "./playSounds";
 const gameOver = require("../../../../assets/sounds/gameOver.mp3");
 
 // Simple animation helper function
-function animateSnakeDeath(snakeHeadMesh, snakeTailMeshArray, controls, onComplete) {
+function animateSnakeDeath(
+  snakeHeadMesh,
+  snakeTailMeshArray,
+  controls,
+  onComplete
+) {
   // Get the camera from the controls
   const camera = controls.object; // OrbitControls stores camera reference in .object property
   const brownColor = { r: 0.545, g: 0.271, b: 0.075 }; // Brown color RGB (0x8B4513)
@@ -23,13 +28,13 @@ function animateSnakeDeath(snakeHeadMesh, snakeTailMeshArray, controls, onComple
   const initialCameraPosition = {
     x: camera.position.x,
     y: camera.position.y,
-    z: camera.position.z
+    z: camera.position.z,
   };
-  
+
   const initialTargetPosition = {
     x: controls.target.x,
     y: controls.target.y,
-    z: controls.target.z
+    z: controls.target.z,
   };
 
   // Define final overview camera position (higher and further back for full field view)
@@ -92,17 +97,29 @@ function animateSnakeDeath(snakeHeadMesh, snakeTailMeshArray, controls, onComple
     if (elapsed <= cameraAnimationDuration) {
       const cameraProgress = elapsed / cameraAnimationDuration;
       const easeOutProgress = 1 - Math.pow(1 - cameraProgress, 3); // Cubic ease-out for smooth camera movement
-      
+
       // Interpolate camera position
-      const currentCameraX = initialCameraPosition.x + (finalCameraPosition.x - initialCameraPosition.x) * easeOutProgress;
-      const currentCameraY = initialCameraPosition.y + (finalCameraPosition.y - initialCameraPosition.y) * easeOutProgress;
-      const currentCameraZ = initialCameraPosition.z + (finalCameraPosition.z - initialCameraPosition.z) * easeOutProgress;
-      
+      const currentCameraX =
+        initialCameraPosition.x +
+        (finalCameraPosition.x - initialCameraPosition.x) * easeOutProgress;
+      const currentCameraY =
+        initialCameraPosition.y +
+        (finalCameraPosition.y - initialCameraPosition.y) * easeOutProgress;
+      const currentCameraZ =
+        initialCameraPosition.z +
+        (finalCameraPosition.z - initialCameraPosition.z) * easeOutProgress;
+
       // Interpolate target position
-      const currentTargetX = initialTargetPosition.x + (finalTargetPosition.x - initialTargetPosition.x) * easeOutProgress;
-      const currentTargetY = initialTargetPosition.y + (finalTargetPosition.y - initialTargetPosition.y) * easeOutProgress;
-      const currentTargetZ = initialTargetPosition.z + (finalTargetPosition.z - initialTargetPosition.z) * easeOutProgress;
-      
+      const currentTargetX =
+        initialTargetPosition.x +
+        (finalTargetPosition.x - initialTargetPosition.x) * easeOutProgress;
+      const currentTargetY =
+        initialTargetPosition.y +
+        (finalTargetPosition.y - initialTargetPosition.y) * easeOutProgress;
+      const currentTargetZ =
+        initialTargetPosition.z +
+        (finalTargetPosition.z - initialTargetPosition.z) * easeOutProgress;
+
       // Directly update camera and controls target
       camera.position.set(currentCameraX, currentCameraY, currentCameraZ);
       controls.target.set(currentTargetX, currentTargetY, currentTargetZ);

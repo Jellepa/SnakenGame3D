@@ -437,7 +437,7 @@ class Game {
 
     // Set initial camera position - same as in updateControls but centered on starting position
     const initialSnakePosition = { x: 7.5, y: 0.7, z: 7.5 }; // Snake starts at center of 15x15 grid
-    
+
     this.controls.goTo = {
       cameraPosition: {
         x: initialSnakePosition.x,
