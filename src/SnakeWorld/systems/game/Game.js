@@ -79,7 +79,6 @@ class Game {
 
     // event listener for mobile controls
     document.addEventListener("touchstart", (e) => {
-      console.log(e.target.classList.value);
       if (e.target.classList.value === "bar") {
         if (this.gameState.running === false) {
           this.start();
@@ -115,14 +114,16 @@ class Game {
     });
 
     this.soundBtn.addEventListener("click", () => {
-      this.gameState.audio = !this.gameState.audio;
-      if (this.gameState.audio) {
-        soundBtn.innerHTML = "";
-        soundBtn.append(muteImage);
+      this.gameSettings.audio = !this.gameSettings.audio;
+      if (this.gameSettings.audio) {
+        this.soundBtn.innerHTML = "";
+        muteImage.style.width = "20px";
+        this.soundBtn.append(muteImage);
         unmuteSounds();
       } else {
-        soundBtn.innerHTML = "";
-        soundBtn.append(unmuteImage);
+        this.soundBtn.innerHTML = "";
+        unmuteImage.style.width = "20px";
+        this.soundBtn.append(unmuteImage);
         muteSounds();
       }
     });
@@ -198,7 +199,6 @@ class Game {
 
         // Handle special fruit spawning
         if (this.gameState.specialFruit.active && !this.specialFruitMesh) {
-          console.log("Creating special fruit mesh..."); // Debug log
           this.specialFruitMesh = new SpecialFruit();
           this.scene.add(this.specialFruitMesh);
           this.loop.updatables.push(this.specialFruitMesh);
@@ -207,10 +207,6 @@ class Game {
             0.7,
             1.5 * this.gameState.specialFruit.position.z
           );
-          console.log(
-            "Special fruit added to scene at position:",
-            this.specialFruitMesh.position
-          ); // Debug log
         }
 
         const gameLoopResult = gameLoop(
@@ -252,21 +248,34 @@ class Game {
 
       // Reset game state immediately
       this.gameState = createGameState();
+      this.gameState.gameOverHandled = false; // Reset game over flag
       this.snakeTailMeshArray = [];
       this.specialFruitMesh = null; // Reset special fruit mesh
 
+      // Reset the step timer
+      this.localElapsedTime = 0;
+
       // Reset all original meshes to their default state after cleanup
       this.resetMeshesToDefault();
+
+      // Reset camera to initial game position
+      this.resetCameraPosition();
     }
 
     // Start the game
     this.gameState.running = true;
     this.loop.start();
     this.addUpdatablesToLoop();
+
+    // Ensure mute button UI state matches current audio setting
+    this.syncMuteButtonState();
   }
 
   addUpdatablesToLoop() {
     // Add animated objects to the loop (check to avoid duplicates)
+    if (!this.loop.updatables.includes(this)) {
+      this.loop.updatables.push(this);
+    }
     if (!this.loop.updatables.includes(this.snakeHeadMesh)) {
       this.loop.updatables.push(this.snakeHeadMesh);
     }
@@ -357,6 +366,7 @@ class Game {
     if (this.snakeHeadMesh) {
       this.snakeHeadMesh.scale.set(1, 1, 1);
       this.snakeHeadMesh.rotation.set(0, 0, 0);
+      this.snakeHeadMesh.position.y = 0.7; // Reset Y position for head
       this.snakeHeadMesh.visible = true; // Ensure visibility is restored
       this.resetMeshMaterials(this.snakeHeadMesh);
     }
@@ -374,6 +384,7 @@ class Game {
       if (tailMesh) {
         tailMesh.scale.set(1, 1, 1);
         tailMesh.rotation.set(0, 0, 0);
+        tailMesh.position.y = 0.7; // Reset Y position for tail segments
         tailMesh.visible = true; // Ensure visibility is restored
         this.resetMeshMaterials(tailMesh);
       }
@@ -389,13 +400,73 @@ class Game {
             child.material.forEach((material) => {
               material.transparent = false;
               material.opacity = 1.0;
+              // Reset snake parts to original blue color (DeepSkyBlue)
+              if (
+                child.parent &&
+                (child.parent.constructor.name === "SnakeHead" ||
+                  child.parent.constructor.name === "SnakeBody")
+              ) {
+                material.color.setRGB(0, 0.7490196078431373, 1);
+              }
+              material.needsUpdate = true;
             });
           } else {
             child.material.transparent = false;
             child.material.opacity = 1.0;
+            // Reset snake parts to original blue color (DeepSkyBlue)
+            if (
+              child.parent &&
+              (child.parent.constructor.name === "SnakeHead" ||
+                child.parent.constructor.name === "SnakeBody")
+            ) {
+              child.material.color.setRGB(0, 0.7490196078431373, 1);
+            }
+            child.material.needsUpdate = true;
           }
         }
       });
+    }
+  }
+
+  // Reset camera to initial game position
+  resetCameraPosition() {
+    // Reset camera to the initial follow-snake position
+    if (this.controls.goTo) {
+      this.controls.comeFrom = { ...this.controls.goTo };
+    }
+
+    // Set initial camera position - same as in updateControls but centered on starting position
+    const initialSnakePosition = { x: 7.5, y: 0.7, z: 7.5 }; // Snake starts at center of 15x15 grid
+    
+    this.controls.goTo = {
+      cameraPosition: {
+        x: initialSnakePosition.x,
+        y: 10,
+        z: initialSnakePosition.z + 15, // Behind the snake for initial "UP" direction
+      },
+      targetPosition: {
+        x: initialSnakePosition.x,
+        y: 1.7,
+        z: initialSnakePosition.z,
+      },
+    };
+
+    // Also set comeFrom to the same position for immediate camera reset
+    this.controls.comeFrom = {
+      cameraPosition: { ...this.controls.goTo.cameraPosition },
+      targetPosition: { ...this.controls.goTo.targetPosition },
+    };
+  }
+
+  // Sync mute button visual state with current audio setting
+  syncMuteButtonState() {
+    this.soundBtn.innerHTML = "";
+    if (this.gameSettings.audio) {
+      muteImage.style.width = "20px";
+      this.soundBtn.append(muteImage);
+    } else {
+      unmuteImage.style.width = "20px";
+      this.soundBtn.append(unmuteImage);
     }
   }
 

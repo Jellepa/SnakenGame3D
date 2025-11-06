@@ -12,8 +12,6 @@ class SpecialFruit extends Group {
     this.meshes = createMeshes();
     this.lights = createLights();
 
-    console.log("SpecialFruit lights:", this.lights); // Debug log
-
     this.meshes.specialFruit.position.set(0, 0.2, 0);
 
     this.lights.spotLight.position.set(1, 5, 1);
@@ -31,8 +29,6 @@ class SpecialFruit extends Group {
     // Timer for self-destruction
     this.timeAlive = 0;
     this.maxLifetime = 12; // 12 seconds
-
-    console.log("SpecialFruit created with purple spotlight"); // Debug log
   }
 
   tick(delta, elapsedTime, stepTime, stepPosition) {

@@ -4,7 +4,7 @@ import { createGeometries } from "./geometries.js";
 import { createMaterials } from "./materials.js";
 
 import { Window } from "./Window/Window.js";
-// import { Smoke } from "./Smoke/Smoke.js";
+import { Smoke } from "./Smoke/Smoke.js";
 
 function createMeshes() {
   const geometries = createGeometries();
@@ -50,6 +50,10 @@ function createMeshes() {
   window4.rotation.y = Math.PI / 2;
   window4.position.set(0.5, 2, 0);
 
+  const smoke = new Smoke();
+  smoke.position.set(-1.7, 1.5, 0);
+  smoke.scale.set(0.5, 0.5, 0.5);
+
   return {
     nose,
     cabin,
@@ -62,6 +66,7 @@ function createMeshes() {
     window2,
     window3,
     window4,
+    smoke,
   };
 }
 

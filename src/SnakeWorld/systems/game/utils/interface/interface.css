@@ -1,37 +1,38 @@
 #gameInterface {
   position: absolute;
-  left: 10px;
-  top: 10px;
+  left: 5px;
+  top: 5px;
   width: calc(100% - 20px);
   max-width: 350px;
   height: auto;
-  border-radius: 10px;
-  background: rgba(8, 8, 8, 0.6);
-  box-shadow: 0 8px 32px 0 rgba(38, 38, 38, 0.17);
-  backdrop-filter: blur(4px);
-  border: 1px solid rgba(10, 10, 10, 0.18);
+  /* border-radius: 5px; */
+  /* background: rgba(8, 8, 8, 0.6); */
+  /* box-shadow: 0 8px 32px 0 rgba(38, 38, 38, 0.17); */
+  /* backdrop-filter: blur(4px); */
+  /* border: 1px solid rgba(10, 10, 10, 0.18); */
   display: flex;
-  justify-content: space-between;
-  padding: 5px;
+  justify-content: flex-start;
+  /* padding: 5px; */
   gap: 5px;
 }
 
 #miniMap {
   width: 150px;
   height: 150px;
-  border-radius: 10px;
-  box-shadow: 0 8px 32px 0 rgba(38, 38, 38, 0.17);
+  border-radius: 5px;
+  /* box-shadow: 0 8px 32px 0 rgba(38, 38, 38, 0.17); */
+  background: rgb(144, 238, 144);
 }
 
 #textBox {
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
-  justify-content: space-between;
+  align-items: flex-start;
+  justify-content: start;
 }
 
 .textStyles {
-  font-family: Digital Dream;
+  /* font-family: Digital Dream; */
   color: #fff;
   position: relative;
   left: calc(50% + 10px);
@@ -41,7 +42,7 @@
 
 #title {
   font-size: 22px;
-  margin: 0 0 10px 0;
+  margin: 0 0 5px 0;
 }
 
 .indicatorStyles {
@@ -50,8 +51,8 @@
 }
 
 .buttonBoxStyles {
-  width: 140px;
-  height: 60px;
+  width: 100px;
+  height: 40px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -60,12 +61,13 @@
 
 .buttonStyles {
   width: 100%;
-  background: rgba(20, 20, 20, 0.3);
-  box-shadow: 0 8px 32px 0 rgba(38, 38, 38, 0.17);
-  backdrop-filter: blur(4px);
-  border: 1px solid rgba(10, 10, 10, 0.18);
+  background: none;
+  /* background: rgba(20, 20, 20, 0.3); */
+  /* box-shadow: 0 8px 32px 0 rgba(38, 38, 38, 0.17); */
+  /* backdrop-filter: blur(4px); */
+  border: 1px solid rgb(255, 255, 255);
   color: #fff;
-  font-size: 30px;
+  font-size: 20px;
   font-weight: bold;
   text-decoration: none;
   border-radius: 3px;

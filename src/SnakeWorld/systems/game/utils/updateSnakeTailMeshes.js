@@ -1,3 +1,5 @@
+import { SnakeBody } from "../../../components/SnakeBody/SnakeBody.js";
+
 function updateSnakeTailMeshes(
   gameState,
   snakeTailMeshArray,
@@ -7,7 +9,10 @@ function updateSnakeTailMeshes(
 ) {
   // Making sure the snake grows and doesn't spawn in a corner
   if (gameState.snakeTail.tailLength > snakeTailMeshArray.length) {
-    let newMesh = snakeTailMesh.clone();
+    // Instead of cloning, create a new SnakeBody instance to avoid cloning issues
+    // with the pivot hierarchy
+    let newMesh = new SnakeBody();
+
     if (
       gameState.snakeTail.newPositions[0] &&
       gameState.snakeTail.oldPositions[0]

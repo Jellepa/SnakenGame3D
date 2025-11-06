@@ -5,10 +5,18 @@ const mute = require("../../../../../assets/images/mute.svg");
 
 const unmute = require("../../../../../assets/images/unmute.svg");
 
-const digitalDreamFont = require("../../../../../assets/fonts/DIGITALDREAMFAT.ttf");
+// const digitalDreamFont = require("../../../../../assets/fonts/DIGITALDREAMFAT.ttf");
+const roboto = require("../../../../../assets/fonts/Roboto-Regular.ttf");
 
-async function loadFonts() {
+/* async function loadFonts() {
   const font = new FontFace("Digital Dream", `url(${digitalDreamFont})`);
+  // wait for font to be loaded
+  await font.load();
+  // add font to document
+  document.fonts.add(font);
+} */
+async function loadFonts() {
+  const font = new FontFace("Roboto", `url(${roboto})`);
   // wait for font to be loaded
   await font.load();
   // add font to document
@@ -20,7 +28,8 @@ const createInterface = () => {
 
   const gameInterface = document.createElement("div");
   gameInterface.id = "gameInterface";
-  gameInterface.style.fontFamily = "Digital Dream";
+  // gameInterface.style.fontFamily = "Digital Dream";
+  gameInterface.style.fontFamily = "Roboto";
 
   // miniMap
   const miniMap = document.createElement("canvas");
@@ -78,9 +87,10 @@ const createInterface = () => {
 
   unmuteImage.src = unmute;
 
-  muteButton.append(muteImage);
-  muteImage.style.width = "30px";
-  unmuteImage.style.width = "30px";
+  // Since audio is disabled by default, show unmute icon
+  muteButton.append(unmuteImage);
+  muteImage.style.width = "20px";
+  unmuteImage.style.width = "20px";
 
   muteButton.addEventListener("mouseenter", (e) => {
     muteButton.style.color = "red";

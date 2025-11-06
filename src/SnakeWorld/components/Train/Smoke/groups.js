@@ -1,12 +1,10 @@
 import { Group } from "three";
-
 import { createMeshes } from "./meshes.js";
 
 function createGroups() {
   const smoke = new Group();
 
   const meshes = createMeshes();
-  console.log("meshes:", meshes);
 
   const SmokeHight = 4;
 
@@ -32,6 +30,7 @@ function createGroups() {
 
   smoke.scale.set(0.4, 0.4, 0.4);
   smoke.position.set(-2, 3, 0);
+
   return {
     smoke,
   };

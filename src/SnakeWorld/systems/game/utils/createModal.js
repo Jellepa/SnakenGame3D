@@ -9,7 +9,7 @@ const modalStyles = {
   left: "0",
   width: "100%",
   height: "100vh", // Use viewport height instead of 100%
-  fontFamily: "Digital Dream",
+  fontFamily: "Roboto, sans-serif", // Consistent font family
   fontSize: "16px", // Smaller font size for better readability
   background: "rgba( 20, 20, 20, 0.7 )", // Slightly more opaque for fullscreen
   boxShadow: "0 8px 32px 0 rgba( 38, 38, 38, 0.17 )",

@@ -12,7 +12,18 @@ class SnakeBody extends Group {
     this.meshes.body.castShadow = true;
     this.meshes.body.receiveShadow = true;
 
-    this.add(this.meshes.body);
+    // Create pivot group for rotation around one end
+    this.pivot = new Group();
+
+    // Move the mesh position relative to the pivot
+    // The capsule geometry (radius 0.4, height 0.6) rotated π/2 on Z
+    // has total length ~1.4 and lies along X axis
+    // Position the mesh so its front end is at the pivot origin
+    this.meshes.body.position.set(-0.7, 0.7, 0);
+
+    // Add mesh to pivot, then pivot to group
+    this.pivot.add(this.meshes.body);
+    this.add(this.pivot);
   }
 
   tick(delta, elapsedTime, stepTime, stepPosition) {
@@ -25,6 +36,8 @@ class SnakeBody extends Group {
         this.oldPosition.z +
         ((this.newPosition.z - this.oldPosition.z) / stepTime) * stepPosition;
 
+      // Position the group (which contains the pivot)
+      // Add Y offset to match snake head positioning (head is at Y=0.7, mesh adds another 0.7)
       this.position.set(positionX * 1.5, 0.7, positionZ * 1.5);
     }
 
@@ -35,7 +48,9 @@ class SnakeBody extends Group {
         stepPosition / stepTime
       );
 
-      this.rotation.set(0, RotationY, 0);
+      // Rotate the pivot instead of the group
+      // This makes the segment rotate around its back end (where the pivot is)
+      this.pivot.rotation.set(0, RotationY, 0);
     }
   }
 }

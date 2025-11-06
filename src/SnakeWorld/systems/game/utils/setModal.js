@@ -8,7 +8,7 @@ function setModal(gameState, modal, option, cssClass) {
         (isPaused ? "<h1>GAME PAUSED</h1>" : "<h1>3D SNAKE GAME</h1>") +
         "<div style='display: flex; flex-direction: column; align-items: center; gap: 25px; max-width: 700px; margin: 0 auto; width: 100%; box-sizing: border-box;'>" +
         // Game explanation section
-        "<div style='text-align: center; width: 100%;'>" +
+        "<div style='text-align: left; width: 100%;'>" +
         "<h2>How to Play</h2>" +
         "<p>The goal is to grow your snake as long as possible by eating fruits!</p>" +
         "<p>🍎 <strong>Normal Fruit:</strong> Worth 5 points</p>" +
@@ -16,11 +16,11 @@ function setModal(gameState, modal, option, cssClass) {
         "<p>This 3D snake game uses third-person camera controls.</p>" +
         "</div>" +
         // Controls section
-        "<div style='text-align: center; width: 100%;'>" +
+        /* "<div style='text-align: left; width: 100%;'>" +
         "<h3>Controls</h3>" +
-        "<div style='display: flex; flex-direction: column; align-items: center; gap: 20px; width: 100%;'>" +
+        "<div style='display: flex; flex-direction: row; align-items: left; gap: 20px; width: 100%;'>" +
         // Keyboard controls
-        "<div style='text-align: center;'>" +
+        "<div style='text-align: left;'>" +
         "<h4>Keyboard</h4>" +
         "<div class='controlGrid'>" +
         "<div class='control W'>W</div>" +
@@ -37,7 +37,7 @@ function setModal(gameState, modal, option, cssClass) {
         "</div>" +
         "</div>" +
         // Movement explanation
-        "<div style='text-align: center; max-width: 400px;'>" +
+        "<div style='text-align: left; max-width: 400px;'>" +
         "<h4>Movement</h4>" +
         "<p><strong>Turn Left:</strong> A or ←</p>" +
         "<p><strong>Turn Right:</strong> D or →</p>" +
@@ -45,9 +45,9 @@ function setModal(gameState, modal, option, cssClass) {
         "<p><strong>Slow Down:</strong> S or ↓</p>" +
         "</div>" +
         "</div>" + // Close controls flex container
-        "</div>" + // Close controls section
+        "</div>" + // Close controls section */
         // Instructions
-        "<div style='text-align: center; margin-top: 20px; margin-bottom: 40px; width: 100%;'>" +
+        "<div style='text-align: left; margin-top: 20px; margin-bottom: 40px; width: 100%;'>" +
         "<p style='font-size: 18px; font-weight: bold;'>Press <span class='space'>SPACE</span> to " +
         (isPaused ? "continue" : "start the game") +
         "</p>" +
@@ -56,15 +56,28 @@ function setModal(gameState, modal, option, cssClass) {
       break;
     case "highScore":
       modal.innerHTML =
-        "<h1>GAME OVER</h1> <h2>New High Score</h2> <p>You scored " +
+        "<h1>GAME OVER</h1>" +
+        "<div style='display: flex; flex-direction: column; align-items: center; gap: 25px; max-width: 700px; margin: 0 auto; width: 100%; box-sizing: border-box;'>" +
+        "<div style='text-align: center; width: 100%;'>" +
+        "<h2>New High Score!</h2>" +
+        "<p style='font-size: 20px; margin-bottom: 20px;'>You scored " +
         gameState.score +
-        "</p> <p>Press space to try again!</p>";
+        " points</p>" +
+        "<p style='font-size: 18px; font-weight: bold;'>Press <span class='space'>SPACE</span> to try again!</p>" +
+        "</div>" +
+        "</div>";
       break;
     case "gameOver":
       modal.innerHTML =
-        "<h1>GAME OVER</h1> <p>you scored " +
+        "<h1>GAME OVER</h1>" +
+        "<div style='display: flex; flex-direction: column; align-items: center; gap: 25px; max-width: 700px; margin: 0 auto; width: 100%; box-sizing: border-box;'>" +
+        "<div style='text-align: center; width: 100%;'>" +
+        "<p style='font-size: 20px; margin-bottom: 20px;'>You scored " +
         gameState.score +
-        "</p> <p>Press space to try again!</p>";
+        " points</p>" +
+        "<p style='font-size: 18px; font-weight: bold;'>Press <span class='space'>SPACE</span> to try again!</p>" +
+        "</div>" +
+        "</div>";
       break;
     default:
       modal.innerHTML = "<h1>YEEEH SNAKENGAME</h1>";

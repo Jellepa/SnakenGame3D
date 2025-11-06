@@ -11,9 +11,6 @@ function updateSnakeHead(gameState) {
   if (gameState.pendingDirection) {
     gameState.currentSnakeDirection = gameState.pendingDirection;
     gameState.pendingDirection = null; // Clear the buffer
-    console.log(
-      `Applied direction change to ${gameState.currentSnakeDirection}`
-    );
   }
 
   if (gameState.currentSnakeDirection == "UP") {

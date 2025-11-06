@@ -3,7 +3,7 @@ const setupMiniMap = (miniMap) => {
 
   // background
 
-  miniMap.style.background = "rgba(20,20,20,0.6)";
+  // miniMap.style.background = "rgba(20,20,20,0.6)";
 
   // arena
   miniMapContext.fillStyle = "#bbbbbb";

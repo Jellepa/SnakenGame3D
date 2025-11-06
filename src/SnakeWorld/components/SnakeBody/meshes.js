@@ -11,7 +11,8 @@ function createMeshes() {
 
   body.rotation.z = Math.PI / 2;
 
-  body.position.set(0, 0.7, 0);
+  // Position will be set in SnakeBody constructor relative to pivot
+  body.position.set(0, 0, 0);
   return {
     body,
   };

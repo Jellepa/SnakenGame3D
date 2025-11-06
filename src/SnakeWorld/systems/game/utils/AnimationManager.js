@@ -454,6 +454,170 @@ class AnimationManager {
       });
     }
   }
+
+  // Method to animate material color changes
+  animateColorChange(mesh, targetColor, duration = 2000, onComplete = null) {
+    const animationData = {
+      r: 0,
+      g: 0,
+      b: 0
+    };
+
+    // Get current color from the mesh's material
+    let currentColor = { r: 0, g: 0, b: 0 };
+    if (mesh.material) {
+      if (Array.isArray(mesh.material)) {
+        currentColor = mesh.material[0].color;
+      } else {
+        currentColor = mesh.material.color;
+      }
+    }
+
+    // Set initial values
+    animationData.r = currentColor.r;
+    animationData.g = currentColor.g;
+    animationData.b = currentColor.b;
+
+    // Parse target color (assuming it's a hex string like "#8B4513" for brown)
+    const targetR = parseInt(targetColor.slice(1, 3), 16) / 255;
+    const targetG = parseInt(targetColor.slice(3, 5), 16) / 255;
+    const targetB = parseInt(targetColor.slice(5, 7), 16) / 255;
+
+    const tween = new SimpleTween(animationData)
+      .to(
+        {
+          r: targetR,
+          g: targetG,
+          b: targetB
+        },
+        duration
+      )
+      .easing(Easing.QuadraticOut)
+      .onUpdate(() => {
+        this.setMeshColor(mesh, animationData.r, animationData.g, animationData.b);
+      })
+      .onComplete(() => {
+        this.activeAnimations.delete(mesh.uuid + "_color");
+        if (onComplete) onComplete();
+      })
+      .start();
+
+    this.activeAnimations.set(mesh.uuid + "_color", tween);
+  }
+
+  // Method to animate sinking into ground
+  animateSinking(mesh, sinkDepth = -2, duration = 3000, onComplete = null) {
+    const originalY = mesh.position.y;
+    const animationData = {
+      y: originalY
+    };
+
+    const tween = new SimpleTween(animationData)
+      .to(
+        {
+          y: originalY + sinkDepth
+        },
+        duration
+      )
+      .easing(Easing.QuadraticIn)
+      .onUpdate(() => {
+        mesh.position.y = animationData.y;
+      })
+      .onComplete(() => {
+        this.activeAnimations.delete(mesh.uuid + "_sink");
+        if (onComplete) onComplete();
+      })
+      .start();
+
+    this.activeAnimations.set(mesh.uuid + "_sink", tween);
+  }
+
+  // Combined death animation for snake parts
+  animateSnakeDeath(snakeHeadMesh, snakeTailMeshArray, onComplete = null) {
+    const brownColor = "#8B4513"; // Brown color hex
+    const colorDuration = 1500; // 1.5 seconds to turn brown
+    const sinkDuration = 2500; // 2.5 seconds to sink
+    const sinkDelay = 1000; // Start sinking 1 second after color change begins
+
+    let completedAnimations = 0;
+    const totalParts = 1 + snakeTailMeshArray.length; // head + all tail segments
+
+    const onPartComplete = () => {
+      completedAnimations++;
+      if (completedAnimations === totalParts * 2 && onComplete) { // *2 because each part has color + sink
+        onComplete();
+      }
+    };
+
+    // Animate snake head
+    if (snakeHeadMesh) {
+      // Color change for head
+      this.animateColorChange(snakeHeadMesh, brownColor, colorDuration, onPartComplete);
+      
+      // Sinking for head (delayed)
+      setTimeout(() => {
+        this.animateSinking(snakeHeadMesh, -2, sinkDuration, onPartComplete);
+      }, sinkDelay);
+    }
+
+    // Animate all tail segments
+    snakeTailMeshArray.forEach((tailMesh, index) => {
+      if (tailMesh) {
+        // Stagger the animations slightly for a wave effect
+        const staggerDelay = index * 150; // 150ms delay between each segment
+        
+        setTimeout(() => {
+          // Color change for tail segment
+          this.animateColorChange(tailMesh, brownColor, colorDuration, onPartComplete);
+          
+          // Sinking for tail segment (delayed)
+          setTimeout(() => {
+            this.animateSinking(tailMesh, -2, sinkDuration, onPartComplete);
+          }, sinkDelay);
+        }, staggerDelay);
+      }
+    });
+  }
+
+  // Helper method to set mesh color
+  setMeshColor(mesh, r, g, b) {
+    if (mesh.material) {
+      if (Array.isArray(mesh.material)) {
+        mesh.material.forEach((material) => {
+          material.color.setRGB(r, g, b);
+          material.needsUpdate = true;
+        });
+      } else {
+        mesh.material.color.setRGB(r, g, b);
+        mesh.material.needsUpdate = true;
+      }
+    }
+
+    // Also update child meshes (for snake head with eyes, etc.)
+    mesh.traverse((child) => {
+      if (child.material && child !== mesh) {
+        if (Array.isArray(child.material)) {
+          child.material.forEach((material) => {
+            material.color.setRGB(r, g, b);
+            material.needsUpdate = true;
+          });
+        } else {
+          child.material.color.setRGB(r, g, b);
+          child.material.needsUpdate = true;
+        }
+      }
+    });
+  }
+
+  // Method to stop all active animations
+  stopAllAnimations() {
+    this.activeAnimations.forEach((tween, key) => {
+      if (tween && tween.stop) {
+        tween.stop();
+      }
+    });
+    this.activeAnimations.clear();
+  }
 }
 
 export { AnimationManager };

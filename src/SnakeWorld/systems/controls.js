@@ -57,11 +57,11 @@ function createGameControls(camera, canvas) {
           stepTime) *
           stepPosition;
 
-      let camPositionY =
-        controls.comeFrom.cameraPosition.y +
+      let camPositionY = 8;
+      /* controls.comeFrom.cameraPosition.y +
         ((controls.goTo.cameraPosition.y - controls.comeFrom.cameraPosition.y) /
           stepTime) *
-          stepPosition;
+          stepPosition; */
 
       let camPositionZ =
         controls.comeFrom.cameraPosition.z +

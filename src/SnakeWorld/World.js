@@ -24,6 +24,9 @@ import { Ground } from "./components/Ground/Ground.js";
 import { createInterface } from "./systems/game/utils/interface/createInterface.js";
 import { createModal } from "./systems/game/utils/createModal";
 
+import { Smoke } from "./components/Train/Smoke/Smoke.js";
+import { Cloud } from "./components/Cloud/Cloud.js";
+
 // These variables are module-scoped: we cannot access them
 // from outside the module
 let camera;
@@ -204,6 +207,18 @@ class World {
     station.rotateY(Math.PI / 2);
     station.position.set(-9, 0, 12);
 
+    const cloud = new Cloud();
+    cloud.position.set(25, 1, 5);
+
+    const cloud2 = cloud.clone();
+    cloud2.position.set(-15, 1, 0);
+
+    const cloud3 = cloud.clone();
+    cloud3.position.set(5, 0, 30);
+
+    const cloud4 = cloud.clone();
+    cloud4.position.set(-5, 1, -20);
+
     // the game
 
     game = new Game(
@@ -274,7 +289,11 @@ class World {
       pine24,
       pine25,
       pine26,
-      station
+      station,
+      cloud,
+      cloud2,
+      cloud3,
+      cloud4
     );
 
     const resizer = new Resizer(container, camera, renderer);

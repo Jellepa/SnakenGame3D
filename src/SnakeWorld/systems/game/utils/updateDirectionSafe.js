@@ -49,13 +49,11 @@ function updateDirectionSafe(e, gameState) {
       gameState.snakeTail
     )
   ) {
-    console.log("Blocked dangerous 180-degree turn to prevent self-collision");
     return;
   }
 
   // Simply store the latest valid input - the game loop will apply it at the right time
   gameState.pendingDirection = newDirection;
-  console.log(`Buffered direction change to ${newDirection}`);
 }
 
 export { updateDirectionSafe, getOppositeDirection, wouldCauseCollision };

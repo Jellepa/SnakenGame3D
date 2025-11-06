@@ -33,6 +33,7 @@ const gameLoop = async (
   if (gameState.gameOver) {
     handleGameOver(
       gameState,
+      gameSettings,
       modal,
       highScore,
       highScoreBoard,
@@ -42,7 +43,8 @@ const gameLoop = async (
       fruitMesh,
       snakeHeadMesh,
       snakeTailMeshArray,
-      scene
+      scene,
+      specialFruitMesh
     );
   }
 

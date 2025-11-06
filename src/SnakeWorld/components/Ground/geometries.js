@@ -1,7 +1,7 @@
-import { PlaneBufferGeometry } from "three";
+import { PlaneGeometry } from "three";
 
 function createGeometries() {
-  const plane = new PlaneBufferGeometry(100, 100, 1, 1);
+  const plane = new PlaneGeometry(100, 100, 1, 1);
 
   return {
     plane,

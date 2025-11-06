@@ -21,7 +21,8 @@ class Train extends Group {
       this.meshes.window,
       this.meshes.window2,
       this.meshes.window3,
-      this.meshes.window4
+      this.meshes.window4,
+      this.meshes.smoke
     );
   }
   tick(delta) {
@@ -29,6 +30,11 @@ class Train extends Group {
     this.meshes.smallWheelRear.rotation.y += wheelSpeed * delta;
     this.meshes.smallWheelCenter.rotation.y += wheelSpeed * delta;
     this.meshes.smallWheelFront.rotation.y += wheelSpeed * delta;
+
+    // Animate the smoke
+    if (this.meshes.smoke && this.meshes.smoke.tick) {
+      this.meshes.smoke.tick(delta);
+    }
     //this.meshes.window.rotation.y += wheelSpeed * delta;
   }
 }
